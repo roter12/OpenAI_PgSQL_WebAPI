@@ -1,0 +1,35 @@
+#Increase character size of the Title. 
+# Define tables
+raw_papers = Table('raw_papers', metadata,
+    Column('paper_id', Integer, primary_key=True),
+    Column('title', Text),
+    Column('url', Text),
+    Column('citation', Integer),
+    Column('pdf_or_html_link', Text),
+    Column('text', Text),
+    Column('abstract', Text),
+    Column('abstract_embeddings', ARRAY(Float)),
+)
+
+
+user_query = Table('user_query', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('user_id', Text, ForeignKey('users.user_id')),  # Assuming 'users' is the table containing user information
+    Column('query', Text),
+    Column('query_embeddings', ARRAY(Float)),
+    Column('abstract_to_query_distance', JSON),
+    Column('selected_paper_ids', JSON),
+    Column('paper_id_page_number_to_query_distance', JSON),
+    Column('closest_paper_id_page_number', JSON),
+)
+
+
+parsed_pages2 = Table('parsed_pages_2', metadata,
+Column('id', Integer, autoincrement=True), # This column can serve as an additional unique identifier for each entry
+Column('paper_id', Integer, ForeignKey('raw_papers.paper_id')), # Foreign key referencing raw_papers
+Column('url', Text),
+Column('page_number', Integer),
+Column('content', Text),
+Column('page_embeddings', ARRAY(Float)),
+PrimaryKeyConstraint('paper_id', 'page_number')
+)
