@@ -29,8 +29,6 @@ class DatabaseManager():
             self.conn = None
             self.meta = None
 
-
-
     def create_database_if_not_exists(self):
         conn = psycopg2.connect(
             dbname="postgres",
